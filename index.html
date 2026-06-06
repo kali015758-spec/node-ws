@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>赵颖大傻逼</title>
+    <title>CYBERPUNK CRITICAL ERROR</title>
     <style>
         :root {
             --neon-pink: #ff007f;
@@ -101,4 +101,135 @@
             animation: glitch 0.8s linear infinite, textPulse 4s ease-in-out infinite;
         }
 
-        /* 极端
+        /* 极端夸张的前后分层故障影分身 */
+        .glitch-text::before,
+        .glitch-text::after {
+            content: attr(data-text);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: transparent;
+        }
+
+        .glitch-text::before {
+            left: 5px;
+            text-shadow: -5px 0 #ff0055, 0 0 30px #ff0055;
+            clip: rect(10px, 9999px, 85px, 0);
+            animation: glitch-anim 2s infinite linear alternate-reverse;
+        }
+
+        .glitch-text::after {
+            left: -5px;
+            text-shadow: -5px 0 #00ffff, 0 5px #ff007f;
+            clip: rect(70px, 9999px, 150px, 0);
+            animation: glitch-anim2 1.5s infinite linear alternate-reverse;
+        }
+
+        /* 文字巨量缩放与狂暴闪烁动画 */
+        @keyframes textPulse {
+            0%, 100% { transform: scale(1); filter: hue-rotate(0deg); }
+            50% { transform: scale(1.1); filter: hue-rotate(45deg); }
+            95% { opacity: 1; }
+            96% { opacity: 0.3; }
+            97% { opacity: 1; }
+        }
+
+        /* 狂暴抖动 */
+        @keyframes glitch {
+            0% { transform: translate(0) skew(0deg); }
+            10% { transform: translate(-4px, 3px) skew(-3deg); }
+            20% { transform: translate(4px, -3px) skew(3deg); }
+            30% { transform: translate(-2px, -2px) skew(0deg); }
+            40% { transform: translate(3px, 3px) skew(2deg); }
+            50% { transform: translate(-3px, 1px) skew(-2deg); }
+            60% { transform: translate(2px, -4px) skew(1deg); }
+            70% { transform: translate(-1px, 2px) skew(0deg); }
+            80% { transform: translate(4px, -1px) skew(-1deg); }
+            90% { transform: translate(-3px, -3px) skew(4deg); }
+            100% { transform: translate(0) skew(0deg); }
+        }
+
+        /* 故障切片截取动画 */
+        @keyframes glitch-anim {
+            0% { clip: rect(15px, 9999px, 60px, 0); }
+            20% { clip: rect(100px, 9999px, 150px, 0); }
+            40% { clip: rect(40px, 9999px, 110px, 0); }
+            60% { clip: rect(5px, 9999px, 95px, 0); }
+            80% { clip: rect(120px, 9999px, 170px, 0); }
+            100% { clip: rect(30px, 9999px, 130px, 0); }
+        }
+
+        @keyframes glitch-anim2 {
+            0% { clip: rect(85px, 9999px, 140px, 0); }
+            25% { clip: rect(10px, 9999px, 55px, 0); }
+            50% { clip: rect(110px, 9999px, 165px, 0); }
+            75% { clip: rect(50px, 9999px, 105px, 0); }
+            100% { clip: rect(5px, 9999px, 80px, 0); }
+        }
+
+        /* 移动端特殊字号微调，防止超出 */
+        @media (max-width: 768px) {
+            .glitch-text { font-size: 15vw; white-space: normal; word-break: break-all; }
+        }
+    </style>
+</head>
+<body>
+
+    <canvas id="background-canvas"></canvas>
+    <div class="grid-bg"></div>
+    <div class="scanlines"></div>
+
+    <div class="container">
+        <h1 class="glitch-text" data-text="赵颖大傻逼">赵颖大傻逼</h1>
+    </div>
+
+    <script>
+        // 背景高频数字流粒子特效
+        const canvas = document.getElementById('background-canvas');
+        const ctx = canvas.getContext('2d');
+
+        let width = canvas.width = window.innerWidth;
+        let height = canvas.height = window.innerHeight;
+
+        const chars = "☠01CRITICAL_ERROR_SYSTEM_FAILURE_99%_☠".split("");
+        const fontSize = 16;
+        const columns = width / fontSize;
+        const drops = [];
+
+        for (let x = 0; x < columns; x++) {
+            drops[x] = Math.random() * -100; // 让出场时间错开
+        }
+
+        function draw() {
+            ctx.fillStyle = "rgba(5, 5, 10, 0.12)"; // 较深的尾迹
+            ctx.fillRect(0, 0, width, height);
+
+            for (let i = 0; i < drops.length; i++) {
+                const text = chars[Math.floor(Math.random() * chars.length)];
+                
+                // 荧光青、荧光粉、纯白交替出现
+                const rand = Math.random();
+                ctx.fillStyle = rand > 0.6 ? "#00f0ff" : (rand > 0.2 ? "#ff007f" : "#ffffff");
+                ctx.font = "bold " + fontSize + "px monospace";
+                
+                ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+
+                if (drops[i] * fontSize > height && Math.random() > 0.98) {
+                    drops[i] = 0;
+                }
+                drops[i] += 1.5; // 加快下落速度
+            }
+        }
+
+        // 提高刷新率让动画更丝滑爆裂
+        setInterval(draw, 25);
+
+        window.addEventListener('resize', () => {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+        });
+    </script>
+</body>
+</html>
